@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build output
+frontend/dist/
+
+# Environment
+.env
+.env.local
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+*.log
+npm-debug.log*
+
+# macOS
+.DS_Store
+
+# Temp
+/tmp/
