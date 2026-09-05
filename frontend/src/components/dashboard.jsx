@@ -1,5 +1,6 @@
 import { ProgressBar, Badge } from './ui'
 import { Icon } from './icons'
+import { iconFor } from '../utils'
 
 export function StatCard({ icon, value, label, color = 'paper', badge }) {
   return (
@@ -79,8 +80,7 @@ export function ChallengeCard({ challenge }) {
 }
 
 export function RewardIcon({ image }) {
-  const name = image || 'gift'
-  return <Icon name={name} size={64} />
+  return <Icon name={iconFor(image)} size={64} />
 }
 
 export function RewardCard({ reward, onRedeem, disabled }) {

@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { api } from '../../services/api'
 import { Loader, Alert, Badge } from '../../components/ui'
-import { PointsCard, WasteCard, LevelCard, ChallengeCard, ActivityItem, RewardCard } from '../../components/dashboard'
-import { levelInfo, fmt, fmtDate, wasteTypeLabel } from '../../utils'
+import { PointsCard, WasteCard, LevelCard, ChallengeCard, ActivityItem, RewardIcon } from '../../components/dashboard'
+import { Icon } from '../../components/icons'
+import { levelInfo, fmt, fmtDate, wasteTypeLabel, wasteTypeIcon } from '../../utils'
 
 export default function Overview() {
   const { user, refreshUser } = useAuth()
@@ -40,7 +41,7 @@ export default function Overview() {
       {dataError && <Alert type="error">{dataError}</Alert>}
 
       <div style={{ marginBottom: 32 }}>
-        <h2 className="heading" style={{ fontSize: 40 }}>{greeting}, {firstName} 👋</h2>
+        <h2 className="heading" style={{ fontSize: 40 }}>{greeting}, {firstName}</h2>
         <p style={{ fontWeight: 600, opacity: 0.7 }}>
           Your Environmental Journey — every collection counts.
         </p>
@@ -71,7 +72,7 @@ export default function Overview() {
               {recent.map((c) => (
                 <ActivityItem
                   key={c.id}
-                  icon="♻"
+                  icon={wasteTypeIcon(c.waste_type)}
                   title={`${wasteTypeLabel(c.waste_type)} Collection`}
                   meta={fmtDate(c.created_at)}
                   points={`${c.points_earned} Points`}
@@ -85,7 +86,11 @@ export default function Overview() {
           <div className="card card-ink">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h3 className="heading" style={{ fontSize: 24, color: 'var(--paper)' }}>Level Progress</h3>
-              <Badge variant="lime" rotate={-4}>{info.icon} {info.title}</Badge>
+              <Badge variant="lime" rotate={-4}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <Icon name={info.icon} size={14} /> {info.title}
+                </span>
+              </Badge>
             </div>
             <div className="fat-num" style={{ color: 'var(--lime)', fontSize: 48, marginTop: 8 }}>
               LEVEL 0{info.level}
@@ -104,7 +109,7 @@ export default function Overview() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {(rewards || []).slice(0, 3).map((r) => (
                 <div key={r.id} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                  <div style={{ fontSize: 36 }} aria-hidden="true">{r.image || '🎁'}</div>
+                  <RewardIcon image={r.image} />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 900 }}>{r.name}</div>
                     <div style={{ fontSize: 13, opacity: 0.7 }}>{fmt(r.points_required)} Points</div>

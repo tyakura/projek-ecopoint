@@ -58,3 +58,34 @@ export function wasteTypeLabel(value) {
 export function wasteTypeIcon(value) {
   return WASTE_TYPES.find((w) => w.value === value)?.icon || 'recycle'
 }
+
+const ICON_ALIASES = {
+  '♻️': 'recycle',
+  '♻': 'recycle',
+  '🌱': 'sprout',
+  '🌎': 'globe',
+  '🌍': 'globe',
+  '🗑️': 'trash_2',
+  '🗑': 'trash_2',
+  '💰': 'banknote',
+  '🎟️': 'ticket',
+  '🎟': 'ticket',
+  '👕': 'shirt',
+  '🎁': 'gift',
+  '🏆': 'trophy',
+  '🥇': 'medal',
+  '🥈': 'medal',
+  '🥉': 'medal',
+  '⭐': 'star',
+  '🌟': 'sparkles',
+  '🍾': 'package',
+  '💪': 'flame',
+  '💡': 'alert_circle',
+  '🔒': 'lock',
+  '👤': 'user',
+  '🎉': 'sparkles',
+}
+
+export function iconFor(value) {
+  return (value && ICON_ALIASES[value]) || value || 'gift'
+}

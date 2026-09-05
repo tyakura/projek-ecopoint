@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react'
 import { api } from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { Loader, Badge } from '../../components/ui'
+import { Icon } from '../../components/icons'
 
 const RANGES = [
   { key: 'all', label: 'All Time' },
   { key: 'week', label: 'This Week' },
   { key: 'month', label: 'This Month' },
 ]
+
+const MEDALS = { 1: 'hazard', 2: 'paper', 3: 'orange' }
 
 export default function Leaderboard() {
   const { user } = useAuth()
@@ -23,13 +26,13 @@ export default function Leaderboard() {
       .finally(() => setLoading(false))
   }, [range])
 
-  const medals = { 1: '🥇', 2: '🥈', 3: '🥉' }
-
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 16, marginBottom: 28 }}>
         <div>
-          <h2 className="heading" style={{ fontSize: 40 }}>🏆 Eco Leaderboard</h2>
+          <h2 className="heading" style={{ fontSize: 40, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Icon name="trophy" size={30} /> Eco Leaderboard
+          </h2>
           <p style={{ fontWeight: 600, opacity: 0.7 }}>Siapa yang paling banyak mengumpulkan sampah?</p>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -66,7 +69,16 @@ export default function Leaderboard() {
                 const isMe = e.user_id === user?.id
                 return (
                   <tr key={e.user_id} style={{ background: isMe ? 'var(--lime)' : undefined, fontWeight: isMe ? 900 : 600 }}>
-                    <td>{medals[e.rank] || `0${e.rank}`}</td>
+                    <td style={{ fontWeight: 700, whiteSpace: 'nowrap' }}>
+                      {MEDALS[e.rank] ? (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                          <Icon name="medal" size={18} style={{ color: 'var(--ink)', background: `var(--${MEDALS[e.rank]})`, border: '2px solid var(--ink)', borderRadius: 6, padding: 2 }} />
+                          0{e.rank}
+                        </span>
+                      ) : (
+                        `0${e.rank}`
+                      )}
+                    </td>
                     <td>
                       {e.name}
                       {isMe && <Badge variant="hazard" rotate={-3} style={undefined}>YOU</Badge>}
@@ -81,8 +93,8 @@ export default function Leaderboard() {
         </div>
       )}
 
-      <p style={{ marginTop: 20, fontSize: 13, opacity: 0.7 }}>
-        💡 Rangking dihitung dari total berat sampah yang terkumpul.
+      <p style={{ marginTop: 20, fontSize: 13, opacity: 0.7, display: 'flex', alignItems: 'center', gap: 6 }}>
+        <Icon name="alert_circle" size={14} /> Rangking dihitung dari total berat sampah yang terkumpul.
       </p>
     </>
   )
