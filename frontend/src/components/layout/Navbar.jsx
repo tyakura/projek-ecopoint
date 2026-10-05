@@ -48,7 +48,7 @@ export default function Navbar() {
               <Link to="/login" className="btn btn-sm" style={{ background: 'var(--paper)', color: 'var(--ink)' }}>
                 LOGIN
               </Link>
-              <Link to="/register" className="btn btn-hazard btn-sm">GET STARTED →</Link>
+              <Link to="/register" className="btn btn-hazard btn-sm">JOIN NOW →</Link>
             </>
           )}
           <button className="navbar-toggle" onClick={() => setOpen(!open)} aria-label="Toggle menu">
