@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext'
 import { api } from '../../services/api'
 import { Loader, Alert, Badge } from '../../components/ui'
 import { RewardCard } from '../../components/dashboard'
+import { Icon } from '../../components/icons'
 import { fmt, fmtDateTime } from '../../utils'
 
 export default function Rewards() {
@@ -33,7 +34,7 @@ export default function Rewards() {
       const rd = await api.get('/rewards/redemptions')
       setRewards(rw.rewards || [])
       setRedemptions(rd.redemptions || [])
-      setMsg(`${reward.name} berhasil ditukar! 🎉`)
+      setMsg(`${reward.name} berhasil ditukar!`)
     } catch (err) {
       setError(err.message || 'Gagal menukar reward')
     }
@@ -45,7 +46,9 @@ export default function Rewards() {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 16, marginBottom: 32 }}>
         <div>
-          <h2 className="heading" style={{ fontSize: 40 }}>⭐ Rewards</h2>
+          <h2 className="heading" style={{ fontSize: 40, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Icon name="star" size={30} /> Rewards
+          </h2>
           <p style={{ fontWeight: 600, opacity: 0.7 }}>Your points. Your rewards.</p>
         </div>
         <div className="card" style={{ padding: '14px 20px', background: 'var(--lime)' }}>
@@ -77,7 +80,7 @@ export default function Rewards() {
         {redemptions.length === 0 && <p style={{ opacity: 0.7 }}>Belum ada penukaran.</p>}
         {redemptions.map((rd) => (
           <div key={rd.id} className="card" style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12, padding: '16px 20px' }}>
-            <div style={{ fontSize: 28 }} aria-hidden="true">🎁</div>
+            <div style={{ color: 'var(--green)', display: 'flex', alignItems: 'center' }} aria-hidden="true"><Icon name="gift" size={28} /></div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 900 }}>{rd.reward_name || 'Reward'}</div>
               <div style={{ fontSize: 13, opacity: 0.7 }}>{fmtDateTime(rd.created_at)}</div>

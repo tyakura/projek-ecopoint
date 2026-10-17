@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { Card, Input, Button, Alert, Loader } from '../../components/ui'
+import { Logo } from '../../components/icons'
 import Footer from '../../components/layout/Footer'
 
 export default function Login() {
@@ -34,9 +35,9 @@ export default function Login() {
         <div className="container" style={{ maxWidth: 480 }}>
           <Card style={{ padding: 40 }}>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 52 }} aria-hidden="true">♻</div>
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }} aria-hidden="true"><Logo size={52} /></div>
               <h2 className="heading-xl" style={{ fontSize: 40 }}>ECOPOINT</h2>
-              <p style={{ fontSize: 18, fontWeight: 900 }}>Welcome Back 👋</p>
+              <p style={{ fontSize: 18, fontWeight: 900 }}>Welcome Back</p>
               <p style={{ opacity: 0.7 }}>Log in to continue your journey.</p>
             </div>
 

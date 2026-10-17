@@ -75,8 +75,6 @@ func levelTitle(xp int) string {
 	return current
 }
 
-// ---------- Auth ----------
-
 func Register(w http.ResponseWriter, r *http.Request) {
 	var body struct {
 		Name            string `json:"name"`
@@ -178,8 +176,6 @@ func Logout(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]bool{"success": true})
 }
 
-// ---------- User ----------
-
 func Me(w http.ResponseWriter, r *http.Request) {
 	u, err := userRepo.ByID(middleware.UserIDFrom(r.Context()))
 	if err != nil {
@@ -210,8 +206,6 @@ func UpdateMe(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, publicUser(u))
 }
-
-// ---------- Collection ----------
 
 func CreateCollection(w http.ResponseWriter, r *http.Request) {
 	var body struct {
@@ -262,8 +256,6 @@ func ListCollections(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, map[string]interface{}{"collections": cols})
 }
-
-// ---------- Challenge ----------
 
 func ListChallenges(w http.ResponseWriter, r *http.Request) {
 	uid := middleware.UserIDFrom(r.Context())
@@ -341,8 +333,6 @@ func challengeWithProgress(c models.Challenge, uc models.UserChallenge) models.C
 	return c
 }
 
-// ---------- Achievement ----------
-
 func ListAchievements(w http.ResponseWriter, r *http.Request) {
 	ach, err := achievementRepo.List(middleware.UserIDFrom(r.Context()))
 	if err != nil {
@@ -351,8 +341,6 @@ func ListAchievements(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, map[string]interface{}{"achievements": ach})
 }
-
-// ---------- Reward ----------
 
 func ListRewards(w http.ResponseWriter, r *http.Request) {
 	rw, err := rewardRepo.ListActive()
@@ -419,8 +407,6 @@ func ListRedemptions(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, map[string]interface{}{"redemptions": red})
 }
-
-// ---------- Leaderboard & Stats ----------
 
 func Leaderboard(w http.ResponseWriter, r *http.Request) {
 	rangeKey := r.URL.Query().Get("range")

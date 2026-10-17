@@ -19,8 +19,6 @@ type AchievementRepo struct{}
 type RewardRepo struct{}
 type LeaderboardRepo struct{}
 
-// ---------- User ----------
-
 func (UserRepo) Create(u models.User) error {
 	_, err := database.DB.Exec(`INSERT INTO users (id, name, email, username, password_hash, created_at, updated_at)
 		VALUES (?,?,?,?,?,?,?)`, u.ID, u.Name, u.Email, u.Username, u.PasswordHash, u.CreatedAt, u.UpdatedAt)
@@ -62,8 +60,6 @@ func (UserRepo) Update(id string, name, avatar string) error {
 	return err
 }
 
-// ---------- Collection ----------
-
 func (CollectionRepo) Create(c models.Collection) error {
 	_, err := database.DB.Exec(`INSERT INTO collections (id, user_id, waste_type, amount, items_count, points_earned, created_at) VALUES (?,?,?,?,?,?,?)`,
 		c.ID, c.UserID, c.WasteType, c.Amount, c.ItemsCount, c.PointsEarned, c.CreatedAt)
@@ -86,8 +82,6 @@ func (CollectionRepo) ByUser(userID string) ([]models.Collection, error) {
 	}
 	return out, nil
 }
-
-// ---------- Challenge ----------
 
 func (ChallengeRepo) List() ([]models.Challenge, error) {
 	rows, err := database.DB.Query(`SELECT id, title, description, target, xp_reward, type, deadline, created_at FROM challenges ORDER BY type ASC, created_at DESC`)
@@ -163,8 +157,6 @@ func (ChallengeRepo) WithProgress(challenges []models.Challenge, userID string) 
 	return challenges
 }
 
-// ---------- Achievement ----------
-
 func (AchievementRepo) List(userID string) ([]models.Achievement, error) {
 	rows, err := database.DB.Query(`SELECT a.id, a.name, a.description, a.icon, a.condition_type, a.condition_value, ua.unlocked_at
 		FROM achievements a LEFT JOIN user_achievements ua ON a.id = ua.achievement_id AND ua.user_id = ?
@@ -185,8 +177,6 @@ func (AchievementRepo) List(userID string) ([]models.Achievement, error) {
 	}
 	return out, nil
 }
-
-// ---------- Reward ----------
 
 func (RewardRepo) ListActive() ([]models.Reward, error) {
 	rows, err := database.DB.Query(`SELECT id, name, description, category, points_required, image, stock, is_active FROM rewards WHERE is_active = 1 ORDER BY points_required ASC`)
@@ -244,8 +234,6 @@ func (RewardRepo) RedemptionsByUser(userID string) ([]models.Redemption, error) 
 	return out, nil
 }
 
-// ---------- Leaderboard ----------
-
 func (LeaderboardRepo) Get(rangeKey string) ([]models.LeaderboardEntry, error) {
 	q := `SELECT u.id, u.name, u.username, u.total_waste, u.level FROM users u ORDER BY u.total_waste DESC LIMIT 20`
 	rows, err := database.DB.Query(q)
@@ -266,8 +254,6 @@ func (LeaderboardRepo) Get(rangeKey string) ([]models.LeaderboardEntry, error) {
 	}
 	return out, nil
 }
-
-// ---------- Stats ----------
 
 func GetStats() (models.Stats, error) {
 	var s models.Stats

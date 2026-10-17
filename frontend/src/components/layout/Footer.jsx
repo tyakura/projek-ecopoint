@@ -34,7 +34,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 EcoPoint — Turn Waste Into Value.</span>
+          <span>© 2026 EcoPoint: Turn Waste Into Value.</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <Icon name="heart" size={16} /> Made for a cleaner planet
           </span>

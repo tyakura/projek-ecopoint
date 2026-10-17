@@ -3,7 +3,8 @@ import { useAuth } from '../../context/AuthContext'
 import { api } from '../../services/api'
 import { Card, Input, Button, Alert, Loader, Badge } from '../../components/ui'
 import { ActivityItem } from '../../components/dashboard'
-import { WASTE_TYPES, wasteTypeLabel, fmtDate } from '../../utils'
+import { Icon } from '../../components/icons'
+import { WASTE_TYPES, wasteTypeLabel, wasteTypeIcon, fmtDate } from '../../utils'
 
 export default function Collection() {
   const { refreshUser } = useAuth()
@@ -56,7 +57,9 @@ export default function Collection() {
   return (
     <>
       <div style={{ marginBottom: 32 }}>
-        <h2 className="heading" style={{ fontSize: 40 }}>♻ New Collection</h2>
+        <h2 className="heading" style={{ fontSize: 40, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <Icon name="recycle" size={30} /> New Collection
+        </h2>
         <p style={{ fontWeight: 600, opacity: 0.7 }}>
           Submit your waste and earn points instantly. Setiap setoran bernilai!
         </p>
@@ -116,14 +119,16 @@ export default function Collection() {
         <div>
           <h3 style={{ fontSize: 24, marginBottom: 16 }}>Active Challenges</h3>
           {pendingChallenges.length === 0 && (
-            <Card><p>Semua challenge selesai! Kamu hebat 💪</p></Card>
+            <Card><p>Semua challenge selesai! Kamu hebat.</p></Card>
           )}
           {pendingChallenges.map((c) => {
             const pct = Math.min(100, Math.round(((c.progress || 0) / c.target) * 100))
             return (
               <div key={c.id} className="card card-white" style={{ marginBottom: 16 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-                  <div className="card-title">🎯 {c.type.toUpperCase()}</div>
+                  <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Icon name="target" size={18} /> {c.type.toUpperCase()}
+                  </div>
                   <Badge variant="orange" rotate={3}>+{c.xp_reward} XP</Badge>
                 </div>
                 <div style={{ fontWeight: 900, margin: '6px 0' }}>{c.title}</div>
@@ -158,7 +163,7 @@ export default function Collection() {
         {collections.map((c) => (
           <ActivityItem
             key={c.id}
-            icon={WASTE_TYPES.find((w) => w.value === c.waste_type)?.value === 'plastic_bottle' ? '🍾' : '♻'}
+            icon={wasteTypeIcon(c.waste_type)}
             title={`${wasteTypeLabel(c.waste_type)} Collection`}
             meta={`${c.amount} KG · ${c.items_count} items · ${fmtDate(c.created_at)}`}
             points={`${c.points_earned} Points`}
