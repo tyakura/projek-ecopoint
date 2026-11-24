@@ -1,7 +1,7 @@
 const TOKEN_KEY = 'ecopoint_token'
 
 // In development, VITE_API_URL is intentionally empty — Vite's dev proxy
-// forwards /api/* to VITE_API_TARGET (localhost:8080). In production
+// forwards /api/* to VITE_API_TARGET (localhost:8081). In production
 // (Vercel), VITE_API_URL must be set to the Railway backend URL, e.g.:
 //   https://ecopoint-backend.up.railway.app
 //

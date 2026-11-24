@@ -33,6 +33,9 @@ export default function Login() {
     <>
       <section className="bg-hazard" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 24px' }}>
         <div className="container" style={{ maxWidth: 480 }}>
+          <Link to={user ? '/dashboard' : '/'} className="auth-back">
+            <span aria-hidden="true">←</span> BACK TO DASHBOARD
+          </Link>
           <Card style={{ padding: 40 }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }} aria-hidden="true"><Logo size={52} /></div>

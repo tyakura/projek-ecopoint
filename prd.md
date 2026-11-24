@@ -64,7 +64,7 @@ UI Components (neo-brutalist)
   ↓
 Pages & Dashboard
   ↓
-API Requests → Backend (Golang REST API)
+API Requests → Backend (NestJS REST API)
 ```
 
 ### 2.1 Frontend Responsibilities
@@ -495,7 +495,7 @@ React + Vite (Frontend)
   ↓
 POST /api/login   (contoh)
   ↓
-Golang Backend (REST API)
+NestJS Backend (REST API)
   ↓
 Database
   ↓

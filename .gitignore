@@ -3,6 +3,7 @@ node_modules/
 
 # Build output
 frontend/dist/
+backend/dist/
 
 # Environment
 .env
@@ -15,6 +16,7 @@ frontend/dist/
 # Logs
 *.log
 npm-debug.log*
+*.tsbuildinfo
 
 # macOS
 .DS_Store

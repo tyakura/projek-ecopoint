@@ -1,13 +1,13 @@
 # ♻️ EcoPoint — Entity Relationship Diagram (Backend)
 
-> Skema database & arsitektur backend **Golang (REST API)** untuk platform gamifikasi pengumpulan sampah EcoPoint. Melengkapi `prd.md` (frontend React + Vite).
+> Skema database & arsitektur backend **NestJS (REST API)** untuk platform gamifikasi pengumpulan sampah EcoPoint. Melengkapi `prd.md` (frontend React + Vite).
 
 ---
 
 ## 1. Backend Tech Stack
 
 ```text
-Golang
+NestJS
   ↓
 HTTP API / REST API
   ↓
@@ -29,17 +29,24 @@ Database
 ### 1.2 Project Structure
 ```text
 backend/
-├── cmd/
-├── config/
-├── handlers/          # HTTP handler per resource (user, collection, reward, dst)
-├── middleware/        # auth middleware, logging, CORS
-├── models/            # struct entitas (User, Collection, Reward, dst)
-├── routes/
-├── services/          # business logic (points calc, level up, redeem)
-├── repositories/       # akses database per entitas
-├── database/
-├── go.mod
-└── main.go
+├── src/
+│   ├── main.ts
+│   ├── app.module.ts
+│   ├── auth/
+│   ├── users/
+│   ├── collections/
+│   ├── challenges/
+│   ├── achievements/
+│   ├── rewards/
+│   ├── leaderboard/
+│   ├── stats/
+│   ├── database/
+│   ├── progress/
+│   └── seed/
+├── package.json
+├── tsconfig.json
+├── nest-cli.json
+└── Dockerfile
 ```
 
 ### 1.3 Frontend ↔ Backend ↔ Database
@@ -53,7 +60,7 @@ backend/
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────┐
-│ BACKEND — Golang                                         │
+│ BACKEND — NestJS                                         │
 │ Authentication • Business Logic • Points • XP          │
 │ Collection • Rewards • Challenges • Leaderboard        │
 └─────────────────────────────────────────────────────────┘
@@ -332,37 +339,38 @@ erDiagram
 
 ---
 
-## 6. Golang Model Sketch
+## 6. NestJS Model Sketch
 
-```go
-// models/user.go
-type User struct {
-    ID          string    `json:"id" db:"id"`
-    Name        string    `json:"name" db:"name"`
-    Email       string    `json:"email" db:"email"`
-    Username    string    `json:"username" db:"username"`
-    PasswordHash string   `json:"-" db:"password_hash"`
-    Avatar      string    `json:"avatar" db:"avatar"`
-    Points      int       `json:"points" db:"points"`
-    XP          int       `json:"xp" db:"xp"`
-    Level       int       `json:"level" db:"level"`
-    TotalWaste  float64   `json:"total_waste" db:"total_waste"`
-    TotalItems  int       `json:"total_items" db:"total_items"`
-    CreatedAt   time.Time `json:"created_at" db:"created_at"`
+```ts
+// src/common/models.ts
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  username: string;
+  password_hash: string;
+  avatar: string | null;
+  points: number;
+  xp: number;
+  level: number;
+  total_waste: number;
+  total_items: number;
+  created_at: string;
+  updated_at: string;
 }
 
-// models/collection.go
-type Collection struct {
-    ID            string    `json:"id" db:"id"`
-    UserID        string    `json:"user_id" db:"user_id"`
-    WasteType     string    `json:"waste_type" db:"waste_type"`
-    Amount        float64   `json:"amount" db:"amount"`
-    ItemsCount    int       `json:"items_count" db:"items_count"`
-    PointsEarned  int       `json:"points_earned" db:"points_earned"`
-    CreatedAt     time.Time `json:"created_at" db:"created_at"`
+// src/common/models.ts
+export interface Collection {
+  id: string;
+  user_id: string;
+  waste_type: string;
+  amount: number;
+  items_count: number;
+  points_earned: number;
+  created_at: string;
 }
 ```
-> Struct lain (`Reward`, `Redemption`, `Challenge`, `UserChallenge`, `Achievement`, `UserAchievement`) mengikuti pola field yang sama seperti tabel di Section 2.
+> Interface lain (`Reward`, `Redemption`, `Challenge`, `UserChallenge`, `Achievement`, `UserAchievement`) mengikuti pola field yang sama seperti tabel di Section 2.
 
 ---
 
@@ -405,5 +413,5 @@ GET    /api/leaderboard?range=week|month|all
 
 - `points`, `xp`, `total_waste`, `total_items` pada `User` bersifat **denormalized/cached** dari agregat `Collection` dan `Redemption` — dipertahankan agar query dashboard cepat, diperbarui lewat service layer setiap ada `Collection`/`Redemption` baru.
 - `UserChallenge` dan `UserAchievement` sengaja dipisah sebagai junction table agar riwayat progres/unlock per user tetap tersimpan meski `Challenge`/`Achievement` induknya berubah/diarsipkan.
-- Untuk MVP, `Level` boleh disederhanakan jadi enum/konstanta di kode Go, alih-alih tabel terpisah — berguna kalau level ingin dikelola dinamis dari admin panel di kemudian hari.
+- Untuk MVP, `Level` boleh disederhanakan jadi enum/konstanta di kode NestJS, alih-alih tabel terpisah — berguna kalau level ingin dikelola dinamis dari admin panel di kemudian hari.
 - Detail tampilan/UI dan komponen frontend yang mengonsumsi endpoint di atas ada di `prd.md`.
